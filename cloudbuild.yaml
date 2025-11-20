@@ -17,7 +17,7 @@ steps:
 
         echo "Starting Cloud SQL Proxy..."
         ./cloud-sql-proxy ip-info-db-478821:europe-west2:my-postgres-instance --port 5432 &
-        PROXY_PID=$!
+        PROXY_PID=$$!
 
         echo "Waiting for proxy to start..."
         sleep 5
@@ -29,7 +29,7 @@ steps:
         DATABASE_URL=$$DATABASE_URL npx sequelize-cli db:migrate
 
         echo "Stopping proxy..."
-        kill $PROXY_PID || true
+        kill $$PROXY_PID || true
 
   # Step 3: Deploy to Google App Engine
   - name: 'gcr.io/cloud-builders/gcloud'
